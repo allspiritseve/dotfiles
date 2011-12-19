@@ -1,0 +1,3 @@
+[submodule "bundle/vim-trailing-whitespace"]
+	path = bundle/vim-trailing-whitespace
+	url = git://github.com/bronson/vim-trailing-whitespace.git

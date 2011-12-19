@@ -1,3 +1,5 @@
+call pathogen#infect()
+
 set nocompatible                " choose no compatibility with legacy vi
 syntax enable
 set encoding=utf-8
@@ -16,3 +18,5 @@ set incsearch                   " incremental searching
 set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 set number
+
+autocmd BufWritePre * FixWhitespace
