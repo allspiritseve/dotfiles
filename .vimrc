@@ -4,6 +4,7 @@ set nocompatible                " choose no compatibility with legacy vi
 syntax enable
 set encoding=utf-8
 set showcmd                     " display incomplete commands
+set directory=/tmp
 filetype plugin indent on       " load file type plugins + indentation
 
 "" Whitespace
