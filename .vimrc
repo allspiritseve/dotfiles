@@ -27,8 +27,8 @@ set ttyfast
 set ruler
 set backspace=indent,eol,start
 set laststatus=2
-set relativenumber
 set undofile
+set number
 
 let mapleader = ","
 
@@ -44,9 +44,7 @@ nnoremap <leader><space> :noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
 
-set wrap
-set textwidth=79
-set formatoptions=qrn1
+set nowrap
 
 nnoremap <up> <nop>
 nnoremap <down> <nop>
