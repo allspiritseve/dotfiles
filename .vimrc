@@ -21,6 +21,7 @@ set autoindent
 set showmode
 set showcmd
 set hidden
+set autowrite
 set history=10000
 set wildmenu
 set wildmode=longest,list
