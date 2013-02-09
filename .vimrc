@@ -35,8 +35,6 @@ set number
 
 let mapleader = ","
 
-nnoremap / /\v
-vnoremap / /\v
 set ignorecase smartcase
 set shell=bash
 set gdefault
@@ -65,7 +63,7 @@ nnoremap <leader>a :Ack
 nnoremap <leader>S ?{<CR>jV/^\s*\}?$<CR>k:sort<CR>:noh<CR>
 nnoremap <leader>q gqip
 nnoremap <leader>v V`]
-inoremap jj <ESC>
+inoremap jk <ESC>
 
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <C-h> <C-w>h
