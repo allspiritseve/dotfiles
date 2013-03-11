@@ -14,6 +14,7 @@ if ! [ -e "$HOME/.vim/bundle" ]; then
   ln -s $DOTFILES/bundle $HOME/.vim/bundle
 fi
 
+ln -sf $DOTFILES/.ackrc $HOME/.ackrc
 ln -sf $DOTFILES/.gvimrc $HOME/.gvimrc
 ln -sf $DOTFILES/.inputrc $HOME/.inputrc
 ln -sf $DOTFILES/.vimrc $HOME/.vimrc

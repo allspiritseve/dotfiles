@@ -1,0 +1,4 @@
+--type-add=ruby=.haml,.slim,.rake,.rsel,.feature,.sass,.markerb,.txt
+--type-add=xml=.xsd
+--type-add=css=.scss,.less,.sass
+--type-add=js=.coffee
