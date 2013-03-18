@@ -1,16 +1,19 @@
 #!/bin/bash
 
 export DOTFILES="$HOME/.dotfiles"
+export VIMHOME="$HOME/.vim"
 
-if ! [ -e "$DOTFILES" ]; then
+if [ ! -d "$DOTFILES" ]; then
   git clone git://github.com/allspiritseve/dotfiles.git "$DOTFILES"
 fi
 
-if ! [ -e "$HOME/.vim/autoload" ]; then
+if [ ! -d "$VIMHOME" ]; then mkdir $VIMHOME; fi
+
+if ! [ -e "$VIMHOME/autoload" ]; then
   ln -s $DOTFILES/autoload $HOME/.vim/autoload
 fi
 
-if ! [ -e "$HOME/.vim/bundle" ]; then
+if ! [ -e "$VIMHOME/bundle" ]; then
   ln -s $DOTFILES/bundle $HOME/.vim/bundle
 fi
 
