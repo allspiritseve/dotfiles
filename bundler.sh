@@ -9,7 +9,7 @@ function bundle_exec () {
   fi
 }
 
-for cmd in rake rails unicorn guard
+for cmd in rake rails unicorn rackup
 do
   alias $cmd="bundle_exec $cmd"
 done

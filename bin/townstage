@@ -1,0 +1,9 @@
+#!/bin/bash
+
+case "$1" in
+  run)
+    ssh -t townstage $@
+    ;;
+  console)
+    ssh -t townstage run rails console
+esac
