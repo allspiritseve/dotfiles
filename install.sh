@@ -10,3 +10,6 @@ test -h "$VIMHOME/.ackrc" || ln -nsf $DOTFILES/.ackrc $HOME/.ackrc
 test -h "$VIMHOME/.gvimrc" || ln -sf $DOTFILES/.gvimrc $HOME/.gvimrc
 test -h "$VIMHOME/.inputrc" || ln -sf $DOTFILES/.inputrc $HOME/.inputrc
 test -h "$VIMHOME/.vimrc" || ln -sf $DOTFILES/.vimrc $HOME/.vimrc
+
+git config --global user.name "Cory Kaufman-Schofield"
+git config --global user.email cory@corykaufman.com
