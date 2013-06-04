@@ -1,9 +1,12 @@
 #!/bin/bash
 
 case "$1" in
-  run)
+  r|run)
     ssh -t townstage $@
     ;;
-  console)
+  c|console)
     ssh -t townstage run rails console
+    ;;
+  s|shell)
+    ssh townstage
 esac

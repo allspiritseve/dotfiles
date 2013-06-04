@@ -33,6 +33,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set undofile
 set number
+set splitright
 
 set ignorecase smartcase
 set shell=bash
