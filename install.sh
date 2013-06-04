@@ -3,10 +3,6 @@
 export DOTFILES="$HOME/.dotfiles"
 export VIMHOME="$HOME/.vim"
 
-if [ ! -d "$DOTFILES" ]; then
-  git clone git://github.com/allspiritseve/dotfiles.git "$DOTFILES"
-fi
-
 if [ ! -d "$VIMHOME" ]; then mkdir $VIMHOME; fi
 
 if ! [ -e "$VIMHOME/autoload" ]; then
