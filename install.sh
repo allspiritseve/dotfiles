@@ -18,5 +18,7 @@ do
   test -h "$HOME/.$file" || ln -nsf $DOTFILES/.$file $HOME/.$file
 done
 
-git config --global user.name "Cory Kaufman-Schofield"
+git config --global merge.ff only
+git config --global push.default simple
 git config --global user.email cory@corykaufman.com
+git config --global user.name "Cory Kaufman-Schofield"
