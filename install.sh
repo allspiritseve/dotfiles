@@ -13,7 +13,7 @@ do
 done
 
 # Create symlinks to dotfiles if they don't already exist
-for file in ackrc gemrc gvimrc inputrc ruby-version selected_editor vimrc
+for file in ackrc bashrc bash_profile gemrc gitignore gvimrc inputrc ruby-version selected_editor vimrc
 do
   test -h "$HOME/.$file" || ln -nsf $DOTFILES/.$file $HOME/.$file
 done
