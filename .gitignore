@@ -1,0 +1,5 @@
+*.sw?
+*.un?
+.DS_Store
+.redcar
+todo.txt

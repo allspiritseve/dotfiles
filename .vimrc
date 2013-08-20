@@ -1,8 +1,9 @@
+set nocompatible
+
 filetype off
 call pathogen#infect()
 syntax on
 filetype plugin indent on
-set nocompatible
 set modelines=0
 
 set tabstop=2
@@ -13,10 +14,10 @@ set expandtab
 set encoding=utf-8
 set scrolloff=3
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/tmp
+set undodir=~/.vim-tmp,~/.tmp,~/tmp,/tmp
 set autoindent
 set copyindent
 set showmode
