@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ssh="ssh -t hogwarts"
+
+case "$1" in
+  r|run)
+    $ssh $@ --app gradecraft.com
+    ;;
+  rake)
+    $ssh run $@ --app gradecraft.com
+    ;;
+  c|console)
+    $ssh run rails console --app gradecraft.com
+    ;;
+  s|shell)
+    $ssh
+esac

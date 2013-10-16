@@ -13,12 +13,11 @@ export HISTSIZE=99999999
 export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home # :(
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
-export PATH="$PATH:$EC2_HOME/bin"
-export PATH="$PATH:$DOTFILES/bin"
-export PATH="$PATH:/Applications/Postgres.app/Contents/MacOS/bin"
-export PATH="$PATH:/usr/local/bin:/usr/local/sbin"
-export PATH="$PATH:/usr/local/share/python"
+export PATH="$EC2_HOME/bin:$PATH"
+export PATH="$DOTFILES/bin:$PATH"
+export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+export PATH="/usr/local/share/python:$PATH"
 export PGDATA="$HOME/Library/Application Support/Postgres/var/"
 export PS1="\u in \w \$ "
 

@@ -9,7 +9,7 @@ function bundle_exec () {
   fi
 }
 
-for cmd in guard puma rackup rails rake rails sequel sidekiq unicorn
+for cmd in guard puma rackup rails rake rails rspec sequel sidekiq unicorn
 do
   alias $cmd="bundle_exec $cmd"
 done

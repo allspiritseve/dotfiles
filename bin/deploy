@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+if [ ! -f ./Gemfile ]; then
+  echo "Couldn't find Gemfile... are you in the right directory?"
+  exit 1
+fi
+
+if git diff-index --quiet production/master; then
+  echo "No changes!"
+  exit 1
+fi
+
+echo -n "Deploy? (y/n) "
+read deploy
+
+timestamp=`date +%Y%m%d`
+count=`git tag -l "$timestamp-*" | wc -l`
+tag=$timestamp-`expr $count + 1`
+
+if [[ "$deploy" -ne "y" ]]; then
+  echo "No touching!"
+  exit 1
+fi
+
+echo "Ok, deploying!"
+git tag $tag
+git push origin $tag
+git push production master

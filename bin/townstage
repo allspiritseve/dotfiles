@@ -1,16 +1,16 @@
 #!/bin/bash
 
-ssh="ssh -t deploy@thorin"
+ssh="ssh -t townstage@thorin"
 
 case "$1" in
   r|run)
-    $ssh $@ --app townstage.com
+    $ssh $@
     ;;
   rake)
-    $ssh run $@ --app townstage.com
+    $ssh run $@
     ;;
   c|console)
-    $ssh run rails console --app townstage.com
+    $ssh run rails console
     ;;
   s|shell)
     $ssh
