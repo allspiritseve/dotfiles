@@ -2,7 +2,9 @@ set nocompatible
 
 filetype off
 execute pathogen#infect()
-syntax on
+syntax enable
+set background=dark
+colorscheme solarized
 filetype plugin indent on
 set modelines=0
 
@@ -64,4 +66,5 @@ inoremap jk <ESC>
 " Show me extra whitespace
 autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
 autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
+autocmd Filetype markdown setlocal spell
 highlight EOLWS ctermbg=red guibg=red

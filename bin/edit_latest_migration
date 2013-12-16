@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vim `ls -t db/migrate/* | head -n 1`

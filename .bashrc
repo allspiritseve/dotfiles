@@ -20,12 +20,24 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/share/python:$PATH"
 export PGDATA="$HOME/Library/Application Support/Postgres/var/"
 export PS1="\u in \w \$ "
+export CDPATH=$CDPATH:$HOME/projects:$HOME/Document
+
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 
 set -o vi # More trouble than it's worth?
 
 if [ -f $DOTFILES/bashrc/bundler.sh ]; then
   source $DOTFILES/bashrc/bundler.sh # I don't wanna bundle exec
 fi
+
+for script in /etc/profile.d/*.sh; do
+  [ -r $script ] && source $script
+done
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  source $(brew --prefix)/etc/bash_completion
+fi
+
 source /usr/local/git/contrib/completion/git-completion.bash
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh

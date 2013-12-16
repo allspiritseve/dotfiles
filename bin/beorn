@@ -1,0 +1,102 @@
+f [ -f ./.beornrc ]; then
+  source ./.beornrc
+fi
+
+remote=${2-${default_remote-"staging"}}
+host=${2-$default_host}
+user=${user-"web"}
+
+# Helpers
+
+assert_gemfile() {
+  if [ ! -f ./Gemfile ]; then
+    echo "Couldn't find Gemfile... are you in the right directory?"
+    exit 1
+  fi
+}
+
+confirm_deploy() {
+  echo -n "Deploy release $tag to $remote? (y/n) "
+  read deploy
+
+  if [[ "$deploy" != "y" ]]; then
+    echo "No touching!"
+    exit 1
+  fi
+}
+
+# Commands
+
+bash() {
+  ssh $host
+}
+
+console() {
+  ssh -t $user@$host run rails console
+}
+
+deploy() {
+  assert_gemfile
+
+  if git diff-index --quiet $remote/master; then
+    echo "No changes!"
+    exit 1
+  fi
+
+  timestamp=`date +%Y%m%d`
+  count=`git tag -l "$timestamp-*" | wc -l`
+  tag=$timestamp-`expr $count + 1`
+
+  confirm_deploy
+
+  echo "Ok, deploying release $tag to $remote!"
+  git tag $tag
+  git push origin master --tags
+  git push $remote $tag
+}
+
+rake() {
+  ssh -t $user@$host run $@
+}
+
+retag() {
+  assert_gemfile
+
+  tag=`git tag -l | tail -n 1`
+
+  git tag -d $tag
+  git tag $tag
+  git push -f origin $tag
+}
+
+redeploy() {
+  assert_gemfile
+
+  tag=`git tag -l | tail -n 1`
+
+  confirm_deploy
+
+  echo "Ok, redeploying release $tag to $remote!"
+  git push -f $remote $tag
+}
+
+run() {
+  ssh -t $user@$host $@
+}
+
+case "$1" in
+  b|bash) bash;;
+  c|console) console;;
+  d|deploy) deploy;;
+  rake) rake;;
+  retag) retag;;
+  redeploy) redeploy;;
+  r|run) run;;
+  u|update)
+    ssh $host 'sudo apt-get update && sudo apt-get upgrade'
+    ;;
+  *)
+    echo "Usage: beorn (bash|console|deploy|rake|retag|redeploy|run|update)" >&2
+    exit 1
+    ;;
+esac
