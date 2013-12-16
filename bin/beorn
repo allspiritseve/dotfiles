@@ -1,23 +1,27 @@
-f [ -f ./.beornrc ]; then
+#!/bin/bash
+
+if [ ! -f ./Gemfile ]; then
+  echo "Couldn't find Gemfile... are you in the right directory?"
+  exit 1
+fi
+
+case "$1" in
+  production) environment=production; shift;;
+  staging) environment=staging; shift;;
+  *) environment=staging;;
+esac
+
+if [ -f ./.beornrc ]; then
   source ./.beornrc
 fi
 
-remote=${2-${default_remote-"staging"}}
-host=${2-$default_host}
-user=${user-"web"}
+remote=${remote-$environment}
+user=${user-'web'}
 
 # Helpers
 
-assert_gemfile() {
-  if [ ! -f ./Gemfile ]; then
-    echo "Couldn't find Gemfile... are you in the right directory?"
-    exit 1
-  fi
-}
-
 confirm_deploy() {
-  echo -n "Deploy release $tag to $remote? (y/n) "
-  read deploy
+  read -p "${1-'Deploy'} release $tag to $remote? (y/n) " deploy
 
   if [[ "$deploy" != "y" ]]; then
     echo "No touching!"
@@ -27,76 +31,74 @@ confirm_deploy() {
 
 # Commands
 
-bash() {
-  ssh $host
-}
-
-console() {
-  ssh -t $user@$host run rails console
-}
-
 deploy() {
-  assert_gemfile
-
-  if git diff-index --quiet $remote/master; then
-    echo "No changes!"
-    exit 1
-  fi
-
-  timestamp=`date +%Y%m%d`
-  count=`git tag -l "$timestamp-*" | wc -l`
-  tag=$timestamp-`expr $count + 1`
+  tag=`git tag -l | tail -n 1`
 
   confirm_deploy
 
   echo "Ok, deploying release $tag to $remote!"
-  git tag $tag
-  git push origin master --tags
   git push $remote $tag
 }
 
-rake() {
-  ssh -t $user@$host run $@
-}
-
-retag() {
-  assert_gemfile
-
-  tag=`git tag -l | tail -n 1`
-
-  git tag -d $tag
-  git tag $tag
-  git push -f origin $tag
-}
-
 redeploy() {
-  assert_gemfile
-
   tag=`git tag -l | tail -n 1`
 
-  confirm_deploy
+  confirm_deploy "Redeploy"
 
   echo "Ok, redeploying release $tag to $remote!"
   git push -f $remote $tag
 }
 
+tag() {
+  timestamp=`date +%Y%m%d`
+  count=`git tag -l "$timestamp-*" | wc -l`
+  tag=$timestamp-`expr $count + 1`
+
+  git tag $tag
+  # git push origin master --tags
+
+  echo "Ok, tagged release $tag."
+}
+
+retag() {
+  tag=`git tag -l | tail -n 1`
+
+  git tag -d $tag
+  git tag $tag
+  # git push -f origin $tag
+
+  echo "Ok, retagged release $tag."
+}
+
+current() {
+  tag=`git tag -l | tail -n 1`
+
+  echo "Current release is $tag"
+}
+
+bash() {
+  ssh $host
+}
+
 run() {
-  ssh -t $user@$host $@
+  ssh -t $user@$host run $@
 }
 
 case "$1" in
   b|bash) bash;;
-  c|console) console;;
+  c|console) run rails console;;
+  current) current;;
   d|deploy) deploy;;
-  rake) rake;;
+  rake) run $@;;
+  tag) tag;;
   retag) retag;;
   redeploy) redeploy;;
-  r|run) run;;
+  r|run) $@;;
   u|update)
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
-    echo "Usage: beorn (bash|console|deploy|rake|retag|redeploy|run|update)" >&2
+    echo "Usage: beorn (bash|console|current|deploy|rake|tag|retag|redeploy|run|update)" >&2
     exit 1
     ;;
 esac
