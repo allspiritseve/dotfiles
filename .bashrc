@@ -15,7 +15,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export PATH="$EC2_HOME/bin:$PATH"
 export PATH="$DOTFILES/bin:$PATH"
-export PATH="/Applications/Postgres.app/Contents/MacOS/bin:$PATH"
+export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/share/python:$PATH"
 export PGDATA="$HOME/Library/Application Support/Postgres/var/"
@@ -38,6 +38,4 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   source $(brew --prefix)/etc/bash_completion
 fi
 
-source /usr/local/git/contrib/completion/git-completion.bash
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
+# source /usr/local/git/contrib/completion/git-completion.bash

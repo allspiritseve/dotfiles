@@ -1,39 +1,39 @@
-[submodule "bundle/ack.vim"]
-	path = bundle/ack.vim
+[submodule ".vim/bundle/ack.vim"]
+	path = .vim/bundle/ack.vim
 	url = git://github.com/mileszs/ack.vim.git
-[submodule "bundle/snipmate.vim"]
-	path = bundle/snipmate.vim
+[submodule ".vim/bundle/snipmate.vim"]
+	path = .vim/bundle/snipmate.vim
 	url = git://github.com/msanders/snipmate.vim.git
-[submodule "bundle/switch.vim"]
-	path = bundle/switch.vim
+[submodule ".vim/bundle/switch.vim"]
+	path = .vim/bundle/switch.vim
 	url = git://github.com/AndrewRadev/switch.vim.git
-[submodule "bundle/syntastic.vim"]
-	path = bundle/syntastic.vim
+[submodule ".vim/bundle/syntastic.vim"]
+	path = .vim/bundle/syntastic.vim
 	url = git://github.com/scrooloose/syntastic.git
-[submodule "bundle/vim-coffee-script"]
-	path = bundle/vim-coffee-script
+[submodule ".vim/bundle/vim-coffee-script"]
+	path = .vim/bundle/vim-coffee-script
 	url = git://github.com/kchmck/vim-coffee-script.git
-[submodule "bundle/vim-fugitive"]
-	path = bundle/vim-fugitive
+[submodule ".vim/bundle/vim-fugitive"]
+	path = .vim/bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
-[submodule "bundle/html5.vim"]
-	path = bundle/html5.vim
+[submodule ".vim/bundle/html5.vim"]
+	path = .vim/bundle/html5.vim
 	url = git://github.com/othree/html5.vim.git
-[submodule "bundle/vim-jade"]
-	path = bundle/vim-jade
+[submodule ".vim/bundle/vim-jade"]
+	path = .vim/bundle/vim-jade
 	url = git://github.com/digitaltoad/vim-jade.git
-[submodule "bundle/vim-ruby-minitest"]
-	path = bundle/vim-ruby-minitest
+[submodule ".vim/bundle/vim-ruby-minitest"]
+	path = .vim/bundle/vim-ruby-minitest
 	url = git://github.com/sunaku/vim-ruby-minitest.git
-[submodule "bundle/vim-haml"]
-	path = bundle/vim-haml
+[submodule ".vim/bundle/vim-haml"]
+	path = .vim/bundle/vim-haml
 	url = git@github.com:tpope/vim-haml.git
-[submodule "bundle/handlebars"]
-	path = bundle/handlebars
+[submodule ".vim/bundle/handlebars"]
+	path = .vim/bundle/handlebars
 	url = git://github.com/nono/vim-handlebars.git
-[submodule "bundle/vim-markdown"]
-	path = bundle/vim-markdown
+[submodule ".vim/bundle/vim-markdown"]
+	path = .vim/bundle/vim-markdown
 	url = git@github.com:tpope/vim-markdown
-[submodule "bundle/vim-colors-solarized"]
-	path = bundle/vim-colors-solarized
+[submodule ".vim/bundle/vim-colors-solarized"]
+	path = .vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git

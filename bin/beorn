@@ -70,10 +70,14 @@ retag() {
   echo "Ok, retagged release $tag."
 }
 
-current() {
+status() {
   tag=`git tag -l | tail -n 1`
 
-  echo "Current release is $tag"
+  set -- $(git rev-list --left-right --count $tag...HEAD)
+  
+  echo "Current tag $tag"
+  echo "Your branch is ahead $2 commits and behind $1 commits"
+  echo "  (use beorn tag to create another release)"
 }
 
 bash() {
@@ -87,18 +91,18 @@ run() {
 case "$1" in
   b|bash) bash;;
   c|console) run rails console;;
-  current) current;;
   d|deploy) deploy;;
   rake) run $@;;
   tag) tag;;
   retag) retag;;
   redeploy) redeploy;;
   r|run) $@;;
+  status) status;;
   u|update)
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
-    echo "Usage: beorn (bash|console|current|deploy|rake|tag|retag|redeploy|run|update)" >&2
+    echo "Usage: beorn (bash|console|deploy|rake|tag|retag|redeploy|run|status|update)" >&2
     exit 1
     ;;
 esac
