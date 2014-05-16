@@ -20,6 +20,12 @@ user=${user-'web'}
 
 # Helpers
 
+while getopts t opt; do
+  case $opt in
+    t) autotag=true;;
+  esac
+done
+
 confirm_deploy() {
   read -p "${1-'Deploy'} release $tag to $remote? (y/n) " deploy
 
@@ -32,6 +38,8 @@ confirm_deploy() {
 # Commands
 
 deploy() {
+  # if $autotag; then tag_release; fi
+
   tag=`git tag -l | tail -n 1`
 
   confirm_deploy
@@ -41,6 +49,8 @@ deploy() {
 }
 
 redeploy() {
+  # if $autotag; then retag fi
+
   tag=`git tag -l | tail -n 1`
 
   confirm_deploy "Redeploy"
@@ -49,7 +59,7 @@ redeploy() {
   git push -f $remote $tag
 }
 
-tag() {
+tag_release() {
   timestamp=`date +%Y%m%d`
   count=`git tag -l "$timestamp-*" | wc -l`
   tag=$timestamp-`expr $count + 1`
@@ -61,6 +71,8 @@ tag() {
 }
 
 retag() {
+  git commit --amend --no-edit
+
   tag=`git tag -l | tail -n 1`
 
   git tag -d $tag
@@ -93,7 +105,7 @@ case "$1" in
   c|console) run rails console;;
   d|deploy) deploy;;
   rake) run $@;;
-  tag) tag;;
+  tag) tag_release;;
   retag) retag;;
   redeploy) redeploy;;
   r|run) $@;;

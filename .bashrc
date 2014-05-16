@@ -16,6 +16,7 @@ export LC_ALL=en_US.UTF-8
 export PATH="$EC2_HOME/bin:$PATH"
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
+export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/share/python:$PATH"
 export PGDATA="$HOME/Library/Application Support/Postgres/var/"

@@ -37,6 +37,7 @@ set laststatus=2
 set undofile
 set number
 set splitright
+set splitbelow
 
 set ignorecase smartcase
 set shell=bash

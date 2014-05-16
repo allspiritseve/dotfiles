@@ -1,0 +1,21 @@
+[user]
+	name = Cory Kaufman-Schofield
+	email = cory@corykaufman.com
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+[core]
+  excludesfile = /Users/cory/.gitignore
+  autocrlf = input
+[merge]
+  tool = opendiff
+	ff = only
+[github]
+  user = allspiritseve
+  token = 1f8be1532b32c93ebb9e3bf2c643bd5a
+[rerere]
+	enabled = 0
+[push]
+	default = upstream
