@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+require_makefile() {
+  if [ ! -f ./Makefile ]; then
+    echo "Couldn't find Makefile... are you in the right directory?"
+    exit 1
+  fi
+}
+
+config() {
+  if [ -f ./.btrc ]; then
+    source ./.btrc
+  else
+    echo -n "Host: "
+    read host
+    echo "host=$host" > .btrc
+    if [ ! -f ./config.mk ]; then
+      echo "host = $host" > config.mk
+    fi
+  fi
+}
+
+init() {
+  config
+  ln -nsf ~/sysadmin/recipes recipes
+  touch Makefile
+}
+
+make() {
+  require_makefile
+  config
+  tar -chzf - . | ssh cory@$host "cd ~/src/bootstrap; tar -xzf -; sudo make $@"
+}
+
+provision() {
+  require_makefile
+  config
+  ssh root@$host "apt-get install vim make aptitude"
+  ssh root@$host "adduser cory --gecos 'Cory Kaufman-Schofield' --uid 618 --disabled-password; sudo -u cory mkdir -p /home/cory/src/bootstrap; sudo -u cory mkdir /home/cory/.ssh"
+
+  scp ~/.ssh/2014/id_rsa.pub root@$host:/home/cory/.ssh/authorized_keys
+  ssh root@$host "chown cory:cory /home/cory/.ssh/authorized_keys; chmod 600 /home/cory/.ssh/authorized_keys"
+}
+
+case "$1" in
+  i|init) init;;
+  m|make) make;;
+  p|provision) provision;;
+  *)
+    echo "Usage: bt (bootstrap|provision)" >&2
+    exit 1
+    ;;
+esac

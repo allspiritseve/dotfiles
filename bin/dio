@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -f ./Gemfile ]; then
+  echo "Couldn't find Gemfile... are you in the right directory?"
+  exit 1
+fi
+
+sync() {
+  git fetch origin
+  git fetch team
+  git push origin master:master
+  git push origin develop:develop
+}
+
+case "$1" in
+  sync) sync;;
+  *) echo "Usage: dio (sync)"; exit 1;;
+esac

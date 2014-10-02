@@ -1,7 +1,0 @@
-#!/bin/bash
-
-case "$1" in
-  n|new)
-    rails new $2 --database=postgresql --skip-test-unit --skip-index-html
-    echo "2.0.0" > $2/.ruby-version
-esac

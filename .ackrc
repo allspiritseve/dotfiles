@@ -2,3 +2,5 @@
 --type-add=xml=.xsd
 --type-add=css=.scss,.less,.sass
 --type-add=js=.coffee
+--ignore-dir=log
+--ignore-dir=tmp

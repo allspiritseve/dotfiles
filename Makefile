@@ -1,6 +1,6 @@
 home = /Users/cory
 
-dotfilenames = .ackrc .bashrc .bash_profile .gemrc .gitconfig .gitignore .gvimrc .inputrc .ruby-version .selected_editor .tmux.conf .vimrc
+dotfilenames = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .gvimrc .inputrc .irbrc .ruby-version .selected_editor .tmux.conf .vimrc
 dotfiles = $(foreach dotfile, $(dotfilenames), $(home)/$(dotfile))
 
 vimdirnames = autoload bundle colors

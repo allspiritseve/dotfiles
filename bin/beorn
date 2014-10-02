@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ ! -f ./Gemfile ]; then
-  echo "Couldn't find Gemfile... are you in the right directory?"
-  exit 1
+if [ ! -d ./.git ]; then
+  echo "Couldn't find git repo... are you in the right directory?"
+  # exit 1
 fi
 
 case "$1" in
@@ -30,7 +30,8 @@ confirm_deploy() {
   read -p "${1-'Deploy'} release $tag to $remote? (y/n) " deploy
 
   if [[ "$deploy" != "y" ]]; then
-    echo "No touching!"
+    git tag -d $tag
+    echo "Deploy cancelled!"
     exit 1
   fi
 }
@@ -38,20 +39,17 @@ confirm_deploy() {
 # Commands
 
 deploy() {
-  # if $autotag; then tag_release; fi
-
-  tag=`git tag -l | tail -n 1`
+  tag=$(current_tag)
 
   confirm_deploy
 
   echo "Ok, deploying release $tag to $remote!"
+
   git push $remote $tag
 }
 
 redeploy() {
-  # if $autotag; then retag fi
-
-  tag=`git tag -l | tail -n 1`
+  tag=$(current_tag)
 
   confirm_deploy "Redeploy"
 
@@ -60,30 +58,36 @@ redeploy() {
 }
 
 tag_release() {
-  timestamp=`date +%Y%m%d`
-  count=`git tag -l "$timestamp-*" | wc -l`
-  tag=$timestamp-`expr $count + 1`
-
-  git tag $tag
+  git tag $(next_tag)
   # git push origin master --tags
 
-  echo "Ok, tagged release $tag."
+  # echo "Ok, tagged release $tag."
 }
 
 retag() {
-  git commit --amend --no-edit
+  # git commit --amend --no-edit
 
-  tag=`git tag -l | tail -n 1`
+  tag=$(current_tag)
 
   git tag -d $tag
   git tag $tag
   # git push -f origin $tag
 
-  echo "Ok, retagged release $tag."
+  # echo "Ok, retagged release $tag."
+}
+
+current_tag() {
+  git tag -l | tail -n 1
+}
+
+next_tag() {
+  timestamp=`date +%Y%m%d`
+  count=`git tag -l "$timestamp-*" | wc -l`
+  echo $timestamp-`expr $count + 1`
 }
 
 status() {
-  tag=`git tag -l | tail -n 1`
+  tag=$(current_tag)
 
   set -- $(git rev-list --left-right --count $tag...HEAD)
   
@@ -96,6 +100,10 @@ bash() {
   ssh $host
 }
 
+migrate() {
+  `bundle exec rake db:migrate db:rollback && bundle exec rake db:migrate`
+}
+
 run() {
   ssh -t $user@$host run $@
 }
@@ -104,6 +112,7 @@ case "$1" in
   b|bash) bash;;
   c|console) run rails console;;
   d|deploy) deploy;;
+  migrate) migrate;;
   rake) run $@;;
   tag) tag_release;;
   retag) retag;;

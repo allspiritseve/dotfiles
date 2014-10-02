@@ -29,6 +29,7 @@ set autowrite
 set history=10000
 set wildmenu
 set wildmode=longest,list
+set wildignore+=*/node_modules/*,*/tmp/*
 set visualbell
 set ttyfast
 set ruler
@@ -69,3 +70,6 @@ autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
 autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
 autocmd Filetype markdown setlocal spell
 highlight EOLWS ctermbg=red guibg=red
+
+" Press space bar to remove search highlight
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
