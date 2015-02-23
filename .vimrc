@@ -10,7 +10,6 @@ set modelines=0
 
 set tabstop=2
 set shiftwidth=2
-set softtabstop=2
 set expandtab
 
 set encoding=utf-8
@@ -48,16 +47,6 @@ set showmatch
 set hlsearch
 
 set nowrap
-
-" One day you will not need these...
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
 
 nnoremap j gj
 nnoremap k gk

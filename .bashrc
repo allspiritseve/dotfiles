@@ -16,11 +16,14 @@ export LC_ALL=en_US.UTF-8
 export PATH="$EC2_HOME/bin:$PATH"
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
+export PATH="$HOME/Library/Android/sdk/tools:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/share/python:$PATH"
 export PGDATA="$HOME/Library/Application Support/Postgres93/var/"
 export PS1="\u in \w \$ "
 export CDPATH=$CDPATH:$HOME/projects:$HOME/Document
+export RUBYMOTION_ANDROID_SDK=$HOME/Library/Android/sdk
+export RUBYMOTION_ANDROID_NDK=$HOME/Library/Android/ndk
 
 function setjdk() {
   if [ $# -ne 0 ]; then
@@ -40,7 +43,8 @@ function removeFromPath() {
 setjdk 1.7
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-alias git_clobber='git clean -df; git checkout -- .'
+# alias git_clobber='git clean -df; git checkout -- .'
+alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
 
 set -o vi # More trouble than it's worth?
 
@@ -56,4 +60,11 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   source $(brew --prefix)/etc/bash_completion
 fi
 
+if [ -f $DOTFILES/bashrc/bundler.sh ]; then
+  source $DOTFILES/completions/beorn.sh
+fi
+
 # source /usr/local/git/contrib/completion/git-completion.bash
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

@@ -2,7 +2,7 @@
 
 if [ ! -d ./.git ]; then
   echo "Couldn't find git repo... are you in the right directory?"
-  # exit 1
+  exit 1
 fi
 
 case "$1" in
@@ -15,6 +15,7 @@ if [ -f ./.beornrc ]; then
   source ./.beornrc
 fi
 
+platform=${platform-'custom'}
 remote=${remote-$environment}
 user=${user-'web'}
 
@@ -26,11 +27,44 @@ while getopts t opt; do
   esac
 done
 
+init_heroku() {
+  if [ -z "$app" ]; then
+    echo "Can't determine Heroku application name. Please add it to .beornrc"
+    exit 1
+  fi
+
+  deploy() {
+    confirm_deploy "Deploy latest commit to Heroku $remote?"
+    echo_exec "git push $remote master" && echo_exec "rake db:migrate"
+  }
+
+  run() {
+    echo_exec "heroku run $@ --app $app"
+  }
+}
+
+init_custom() {
+  deploy() {
+    tag=$(current_tag)
+
+    confirm_deploy "Deploy release $tag to $remote?"
+
+    echo "Ok, deploying release $tag to $remote!"
+
+    git push $remote $tag
+  }
+
+  run() {
+    ssh -t $user@$host run $@
+  }
+}
+
+init_${platform}
+
 confirm_deploy() {
-  read -p "${1-'Deploy'} release $tag to $remote? (y/n) " deploy
+  read -p "${1-"Deploy release $tag to $remote?"} (y/n) " deploy
 
   if [[ "$deploy" != "y" ]]; then
-    git tag -d $tag
     echo "Deploy cancelled!"
     exit 1
   fi
@@ -38,20 +72,11 @@ confirm_deploy() {
 
 # Commands
 
-deploy() {
-  tag=$(current_tag)
-
-  confirm_deploy
-
-  echo "Ok, deploying release $tag to $remote!"
-
-  git push $remote $tag
-}
 
 redeploy() {
   tag=$(current_tag)
 
-  confirm_deploy "Redeploy"
+  confirm_deploy "Redeploy" $tag
 
   echo "Ok, redeploying release $tag to $remote!"
   git push -f $remote $tag
@@ -73,7 +98,7 @@ retag() {
   git tag $tag
   # git push -f origin $tag
 
-  # echo "Ok, retagged release $tag."
+  echo "Ok, retagged release $tag."
 }
 
 current_tag() {
@@ -101,15 +126,32 @@ bash() {
 }
 
 migrate() {
-  `bundle exec rake db:migrate db:rollback && bundle exec rake db:migrate`
+  bundle exec rake db:migrate db:rollback && bundle exec rake db:migrate
 }
 
-run() {
-  ssh -t $user@$host run $@
+beorn_echo() {
+  echo " -> $@"
+}
+
+echo_exec() {
+  beorn_echo $@
+  $@
+}
+
+commands() {
+  for cmd in "bash commands console deploy migrate rake tag retag redeploy run status update"; do
+    echo $cmd
+  done
+}
+
+sync() {
+  git fetch
+  git push
 }
 
 case "$1" in
   b|bash) bash;;
+  commands) commands;;
   c|console) run rails console;;
   d|deploy) deploy;;
   migrate) migrate;;
@@ -119,11 +161,12 @@ case "$1" in
   redeploy) redeploy;;
   r|run) $@;;
   status) status;;
+  sync) sync;;
   u|update)
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
-    echo "Usage: beorn (bash|console|deploy|rake|tag|retag|redeploy|run|status|update)" >&2
+    echo "Usage: beorn (bash|console|deploy|rake|tag|retag|redeploy|run|status|sync|update)" >&2
     exit 1
     ;;
 esac
