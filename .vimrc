@@ -60,5 +60,38 @@ autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
 autocmd Filetype markdown setlocal spell
 highlight EOLWS ctermbg=red guibg=red
 
+let mapleader=" "
+
 " Press space bar to remove search highlight
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+nmap <silent> <Leader><Leader> :nohlsearch<Bar>:echo<CR>
+
+:nmap ; :CtrlPBuffer<CR>
+
+noremap <Leader>r :w<CR>:!clear && ruby % <CR>
+noremap <Leader>i :w<CR>:!clear && irb -r ./% <CR>
+
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+  set t_Co=256
+endif
+
+" au BufRead,BufNewFile *.js,*.json set sw=4 ts=4
+" au BufRead,BufNewFile *.rb set sw=2 ts=2
+
+" Run a given vim command on the results of fuzzy selecting from a given shell
+" command. See usage below.
+function! SelectaCommand(choice_command, selecta_args, vim_command)
+  try
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec a:vim_command . " " . selection
+endfunction
+
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those. Open the selected file with :e.
+nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
