@@ -18,6 +18,7 @@ fi
 platform=${platform-'custom'}
 remote=${remote-$environment}
 user=${user-'web'}
+commands=()
 
 # Helpers
 
@@ -33,14 +34,32 @@ init_heroku() {
     exit 1
   fi
 
+  config() {
+    echo_exec "heroku config --app $app"
+  }
+
   deploy() {
     confirm_deploy "Deploy latest commit to Heroku $remote?"
+    echo_exec "git push $remote master" && echo_exec "rake db:migrate"
+  }
+
+  redeploy() {
+    confirm_deploy "Redeploy latest commit to Heroku $remote?"
+
+    echo "Ok, redeploying latest commit to Heroku $remote!"
+
     echo_exec "git push $remote master" && echo_exec "rake db:migrate"
   }
 
   run() {
     echo_exec "heroku run $@ --app $app"
   }
+
+  status() {
+    echo "This is a Heroku app."
+  }
+
+  commands=(${commands[@]} deploy redeploy run config status)
 }
 
 init_custom() {
@@ -54,12 +73,31 @@ init_custom() {
     git push $remote $tag
   }
 
+  redeploy() {
+    tag=$(current_tag)
+
+    confirm_deploy "Redeploy" $tag
+
+    echo "Ok, redeploying release $tag to $remote!"
+    git push -f $remote $tag
+  }
+
   run() {
     ssh -t $user@$host run $@
   }
-}
 
-init_${platform}
+  status() {
+    tag=$(current_tag)
+
+    set -- $(git rev-list --left-right --count $tag...HEAD)
+    
+    echo "Current tag $tag"
+    echo "Your branch is ahead $2 commits and behind $1 commits"
+    echo "  (use beorn tag to create another release)"
+  }
+
+  commands=(${commands[@]} deploy redeploy run status)
+}
 
 confirm_deploy() {
   read -p "${1-"Deploy release $tag to $remote?"} (y/n) " deploy
@@ -71,22 +109,28 @@ confirm_deploy() {
 }
 
 # Commands
-
-
-redeploy() {
-  tag=$(current_tag)
-
-  confirm_deploy "Redeploy" $tag
-
-  echo "Ok, redeploying release $tag to $remote!"
-  git push -f $remote $tag
+bash() {
+  ssh $host
 }
 
-tag_release() {
-  git tag $(next_tag)
-  # git push origin master --tags
+commands() {
+  for cmd in "${commands[@]}"; do
+    echo $cmd
+  done | sort -du
+}
 
-  # echo "Ok, tagged release $tag."
+current_tag() {
+  git tag -l | tail -n 1
+}
+
+migrate() {
+  bundle exec rake db:migrate db:rollback && bundle exec rake db:migrate
+}
+
+next_tag() {
+  timestamp=`date +%Y%m%d`
+  count=`git tag -l "$timestamp-*" | wc -l`
+  echo $timestamp-`expr $count + 1`
 }
 
 retag() {
@@ -101,36 +145,28 @@ retag() {
   echo "Ok, retagged release $tag."
 }
 
-current_tag() {
-  git tag -l | tail -n 1
+sync() {
+  git fetch
+  git push
 }
 
-next_tag() {
-  timestamp=`date +%Y%m%d`
-  count=`git tag -l "$timestamp-*" | wc -l`
-  echo $timestamp-`expr $count + 1`
+tag_release() {
+  git tag $(next_tag)
+  # git push origin master --tags
+
+  # echo "Ok, tagged release $tag."
 }
 
-status() {
-  tag=$(current_tag)
+commands=(${commands[@]} bash commands console current_tag migrate next_tag retag status sync tag_release)
 
-  set -- $(git rev-list --left-right --count $tag...HEAD)
-  
-  echo "Current tag $tag"
-  echo "Your branch is ahead $2 commits and behind $1 commits"
-  echo "  (use beorn tag to create another release)"
-}
-
-bash() {
-  ssh $host
-}
-
-migrate() {
-  bundle exec rake db:migrate db:rollback && bundle exec rake db:migrate
-}
+# Internal
 
 beorn_echo() {
   echo " -> $@"
+}
+
+beorn_join() {
+  local IFS="$1"; shift; echo "$*";
 }
 
 echo_exec() {
@@ -138,21 +174,13 @@ echo_exec() {
   $@
 }
 
-commands() {
-  for cmd in "bash commands console deploy migrate rake tag retag redeploy run status update"; do
-    echo $cmd
-  done
-}
-
-sync() {
-  git fetch
-  git push
-}
+init_${platform}
 
 case "$1" in
   b|bash) bash;;
   commands) commands;;
   c|console) run rails console;;
+  config) config;;
   d|deploy) deploy;;
   migrate) migrate;;
   rake) run $@;;
@@ -166,7 +194,7 @@ case "$1" in
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
-    echo "Usage: beorn (bash|console|deploy|rake|tag|retag|redeploy|run|status|sync|update)" >&2
+    echo -e "\nDid not recognize command '$1'\n\nUsage: beorn ($(beorn_join '|' ${commands[@]}))" >&2
     exit 1
     ;;
 esac
