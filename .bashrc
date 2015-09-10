@@ -1,9 +1,11 @@
 #!/bin/bash
 
 export ACKRC=.ackrc
-export ANDROID_HOME=/usr/local/opt/android-sdk
-export CC=/usr/bin/gcc-4.2
+export ANDROID_HOME=$HOME/Library/Android/sdk
 export CLICOLOR=true
+export DOCKER_CERT_PATH=/Users/cory/.boot2docker/certs/boot2docker-vm
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_TLS_VERIFY=1
 export DOTFILES=$HOME/.dotfiles
 export EC2_HOME=$HOME/.ec2
 export EDITOR=vim # :)
@@ -13,17 +15,16 @@ export HISTSIZE=99999999
 # export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home # :(
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH="$EC2_HOME/bin:$PATH"
 export PATH="$DOTFILES/bin:$PATH"
-export PATH="/Applications/Postgres93.app/Contents/MacOS/bin:$PATH"
-export PATH="$HOME/Library/Android/sdk/tools:$PATH"
+export PATH="$EC2_HOME/bin:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
+export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-export PATH="/usr/local/share/python:$PATH"
-export PGDATA="$HOME/Library/Application Support/Postgres93/var/"
+export PATH="/usr/local/heroku/bin:$PATH"
+export PGDATA="$HOME/Library/Application Support/Postgres/var-9.4/"
 export PS1="\u in \w \$ "
-export CDPATH=$CDPATH:$HOME/projects:$HOME/Document
-export RUBYMOTION_ANDROID_SDK=$HOME/Library/Android/sdk
 export RUBYMOTION_ANDROID_NDK=$HOME/Library/Android/ndk
+export RUBYMOTION_ANDROID_SDK=$HOME/Library/Android/sdk
 
 function setjdk() {
   if [ $# -ne 0 ]; then
@@ -43,10 +44,9 @@ function removeFromPath() {
 setjdk 1.7
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
-# alias git_clobber='git clean -df; git checkout -- .'
 alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
 
-set -o vi # More trouble than it's worth?
+set -o vi
 
 if [ -f $DOTFILES/bashrc/bundler.sh ]; then
   source $DOTFILES/bashrc/bundler.sh # I don't wanna bundle exec
@@ -65,6 +65,3 @@ if [ -f $DOTFILES/bashrc/bundler.sh ]; then
 fi
 
 # source /usr/local/git/contrib/completion/git-completion.bash
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"

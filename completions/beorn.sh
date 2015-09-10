@@ -1,5 +1,5 @@
 _beorn() {
-  OMPREPLY=()
+  COMPREPLY=()
   local word="${COMP_WORDS[COMP_CWORD]}"
 
   if [ "$COMP_CWORD" -eq 1 ]; then
@@ -11,4 +11,4 @@ _beorn() {
   fi
 }
 
-complete -F _beorn beorn
+complete -F _beorn -o bashdefault -o default beorn

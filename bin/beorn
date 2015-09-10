@@ -34,13 +34,13 @@ init_heroku() {
     exit 1
   fi
 
-  config() {
-    echo_exec "heroku config --app $app"
+  beorn_exec() {
+    echo_exec "heroku $@ --app $app"
   }
 
   deploy() {
     confirm_deploy "Deploy latest commit to Heroku $remote?"
-    echo_exec "git push $remote master" && echo_exec "rake db:migrate"
+    echo_exec "git push $remote master" && run "rake db:migrate"
   }
 
   redeploy() {
@@ -48,21 +48,34 @@ init_heroku() {
 
     echo "Ok, redeploying latest commit to Heroku $remote!"
 
-    echo_exec "git push $remote master" && echo_exec "rake db:migrate"
+    echo_exec "git push -f $remote master" && run "rake db:migrate"
   }
 
   run() {
-    echo_exec "heroku run $@ --app $app"
+    beorn_exec run $@
   }
 
   status() {
     echo "This is a Heroku app."
   }
 
-  commands=(${commands[@]} deploy redeploy run config status)
+  logs() {
+    echo_exec "heroku logs $@ --app $app"
+  }  
+
+  tag_release() {
+    echo "No need to tag releases, as you're using Heroku" >&2
+    exit 1
+  }
+
+  commands=(${commands[@]} config:add config:remove deploy redeploy run config status)
 }
 
 init_custom() {
+  beorn_exec() {
+    $@
+  }
+
   deploy() {
     tag=$(current_tag)
 
@@ -96,7 +109,18 @@ init_custom() {
     echo "  (use beorn tag to create another release)"
   }
 
-  commands=(${commands[@]} deploy redeploy run status)
+  tag_release() {
+    tag=$(next_tag)
+    git tag $tag
+    git push origin $tag
+    echo "Ok, tagged release $tag."
+  }
+
+  logs() {
+    echo_exec ssh $user@$host tail $@ /home/web/app/current/log/$environment.log
+  }
+
+  commands=(${commands[@]} deploy logs redeploy run status tag_release)
 }
 
 confirm_deploy() {
@@ -119,8 +143,12 @@ commands() {
   done | sort -du
 }
 
+completions() {
+  echo ""
+}
+
 current_tag() {
-  git tag -l | tail -n 1
+  git tag -l --sort="v:refname" | tail -n 1
 }
 
 migrate() {
@@ -140,7 +168,7 @@ retag() {
 
   git tag -d $tag
   git tag $tag
-  # git push -f origin $tag
+  git push -f origin $tag
 
   echo "Ok, retagged release $tag."
 }
@@ -150,14 +178,11 @@ sync() {
   git push
 }
 
-tag_release() {
-  git tag $(next_tag)
-  # git push origin master --tags
-
-  # echo "Ok, tagged release $tag."
+test() {
+  echo_exec ruby -I'lib:test' $@
 }
 
-commands=(${commands[@]} bash commands console current_tag migrate next_tag retag status sync tag_release)
+commands=(${commands[@]} bash commands console current_tag migrate next_tag rake retag status sync tag_release test)
 
 # Internal
 
@@ -174,14 +199,30 @@ echo_exec() {
   $@
 }
 
+checkpoint() {
+  if [ -z "$1" ]; then
+    echo -e "Please pass a checkpoint name, e.g. beorn checkpoint my-changes"
+    exit 1
+  fi
+  echo "beorn checkpoint $1"
+  timestamp=`date +%Y-%m-%d %H:%M:%S`
+  git checkout -b $1
+  git add .
+  git commit -m "Checkpoint $timestamp"
+  git checkout master
+}
+
 init_${platform}
 
 case "$1" in
   b|bash) bash;;
+  checkpoint) $@;;
   commands) commands;;
+  completions) $@;;
   c|console) run rails console;;
-  config) config;;
+  config|config:set|config:remove) beorn_exec $@;;
   d|deploy) deploy;;
+  logs) $@;;
   migrate) migrate;;
   rake) run $@;;
   tag) tag_release;;
@@ -190,10 +231,12 @@ case "$1" in
   r|run) $@;;
   status) status;;
   sync) sync;;
+  test) $@;;
   u|update)
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
+    echo -e "Received: $@" >&2
     echo -e "\nDid not recognize command '$1'\n\nUsage: beorn ($(beorn_join '|' ${commands[@]}))" >&2
     exit 1
     ;;

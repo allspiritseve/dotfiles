@@ -54,6 +54,9 @@ nnoremap k gk
 " Just kidding!
 inoremap jk <ESC>
 
+" Someday you will not need this...
+" :inoremap <esc> <nop>
+
 " Show me extra whitespace
 autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
 autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
