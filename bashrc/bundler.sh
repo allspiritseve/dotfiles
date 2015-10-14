@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function bundle_exec () {
+bundle_exec() {
   if [ -r ./Gemfile ]; then
     echo " -> bundle exec $@"
     bundle exec $@
@@ -8,8 +8,10 @@ function bundle_exec () {
     $@
   fi
 }
+export -f bundle_exec
 
 for cmd in guard puma rackup rails rake rails rspec sequel sidekiq unicorn
 do
-  alias $cmd="bundle_exec $cmd"
+  eval "function ${cmd}() { bundle_exec $cmd \$@; }"
+  export -f $cmd
 done

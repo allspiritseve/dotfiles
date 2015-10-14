@@ -60,7 +60,7 @@ init_heroku() {
   }
 
   logs() {
-    echo_exec "heroku logs $@ --app $app"
+    heroku_cmd logs
   }  
 
   tag_release() {
@@ -68,7 +68,45 @@ init_heroku() {
     exit 1
   }
 
-  commands=(${commands[@]} config:add config:remove deploy redeploy run config status)
+  heroku_cmd() {
+    echo_exec "heroku $@ --app $app"
+  }
+
+  commands=(${commands[@]} config:add config:remove deploy logs redeploy run config status)
+}
+
+init_deis() {
+  if [ -z "$app" ]; then
+    echo "Can't determine Deis application name. Please add it to .beornrc"
+    exit 1
+  fi
+
+  beorn_exec() {
+    echo_exec "deis $@ --app $app"
+  }
+
+  deploy() {
+    confirm_deploy "Deploy latest commit to Deis $remote?"
+    echo_exec "git push $remote master" && run "rake db:migrate"
+  }
+
+  redeploy() {
+    confirm_deploy "Redeploy latest commit to Deis $remote?"
+
+    echo "Ok, redeploying latest commit to Deis $remote!"
+
+    echo_exec "git push -f $remote master" && run "rake db:migrate"
+  }
+
+  run() {
+    beorn_exec run $@
+  }
+
+  logs() {
+    beorn_exec logs
+  }
+
+  commands=(${commands[@]} deploy redeploy run logs)
 }
 
 init_custom() {
@@ -78,12 +116,14 @@ init_custom() {
 
   deploy() {
     tag=$(current_tag)
+    branch=$(branch)
 
     confirm_deploy "Deploy release $tag to $remote?"
 
     echo "Ok, deploying release $tag to $remote!"
 
     git push $remote $tag
+    git push origin $branch $tag
   }
 
   redeploy() {
@@ -101,9 +141,12 @@ init_custom() {
 
   status() {
     tag=$(current_tag)
+    current_branch=$(branch)
+
 
     set -- $(git rev-list --left-right --count $tag...HEAD)
     
+    echo "Current branch: $current_branch"
     echo "Current tag $tag"
     echo "Your branch is ahead $2 commits and behind $1 commits"
     echo "  (use beorn tag to create another release)"
@@ -135,6 +178,10 @@ confirm_deploy() {
 # Commands
 bash() {
   ssh $host
+}
+
+branch() {
+  [[ `git status | head -n 1` =~ On\ branch\ (.*) ]] && echo ${BASH_REMATCH[1]}
 }
 
 commands() {
@@ -179,10 +226,14 @@ sync() {
 }
 
 test() {
-  echo_exec ruby -I'lib:test' $@
+  if [[ "$@" =~ ^spec/ ]]; then
+    eval "rspec $@"
+  else
+    echo_exec ruby -I'lib:test' $@
+  fi
 }
 
-commands=(${commands[@]} bash commands console current_tag migrate next_tag rake retag status sync tag_release test)
+commands=(${commands[@]} bash branch commands console current_tag migrate next_tag rake retag retag_deploy status sync tag tag_deploy test)
 
 # Internal
 
@@ -215,27 +266,26 @@ checkpoint() {
 init_${platform}
 
 case "$1" in
-  b|bash) bash;;
-  checkpoint) $@;;
-  commands) commands;;
-  completions) $@;;
+  b) bash ${@:2};;
+  deis) beorn_exec ${@:2};;
   c|console) run rails console;;
   config|config:set|config:remove) beorn_exec $@;;
-  d|deploy) deploy;;
-  logs) $@;;
-  migrate) migrate;;
+  d) deploy ${@:2};;
+  heroku) heroku_cmd ${@:2};;
   rake) run $@;;
   tag) tag_release;;
-  retag) retag;;
-  redeploy) redeploy;;
-  r|run) $@;;
-  status) status;;
-  sync) sync;;
-  test) $@;;
+  tag_deploy) tag_release && deploy;;
+  reload) run reload;;
+  retag_and_deploy) retag && redeploy;;
+  r) run ${@:2};;
   u|update)
     ssh $host 'sudo apt-get update && sudo apt-get upgrade'
     ;;
   *)
+    for cmd in "${commands[@]}"; do
+      [[ "$1" == $cmd ]] && $@ && exit 0
+    done
+
     echo -e "Received: $@" >&2
     echo -e "\nDid not recognize command '$1'\n\nUsage: beorn ($(beorn_join '|' ${commands[@]}))" >&2
     exit 1
