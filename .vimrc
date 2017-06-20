@@ -6,19 +6,27 @@ syntax enable
 set background=dark
 colorscheme solarized
 filetype plugin indent on
-set modelines=0
+set modeline
+set modelines=5
 
-set tabstop=2
-set shiftwidth=2
+" Allow per-project .vimrc files
+set exrc
+set secure
+
+set tabstop=2 shiftwidth=2
 set expandtab
 
 set encoding=utf-8
 set scrolloff=3
+
+" Backup
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/tmp
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/tmp
+set writebackup
+
 set autoindent
 set copyindent
 set showmode
@@ -68,8 +76,6 @@ let mapleader=" "
 " Press space bar to remove search highlight
 nmap <silent> <Leader><Leader> :nohlsearch<Bar>:echo<CR>
 
-:nmap ; :CtrlPBuffer<CR>
-
 noremap <Leader>r :w<CR>:!clear && ruby % <CR>
 noremap <Leader>i :w<CR>:!clear && irb -r ./% <CR>
 
@@ -101,3 +107,12 @@ nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 
 " Run tests
 nnoremap <leader>t :w<cr>:!clear; beorn test %<cr>
+
+" Syntastic options
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0

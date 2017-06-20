@@ -1,7 +1,14 @@
 *.sw?
 *.un?
 .DS_Store
-.redcar
-todo.txt
+.ackrc
 .beornrc
+.byebug_history
+.jshintrc
+.redcar
+.ruby-version
+.vimrc
 ignore
+projects/wink/api/config/database.yml
+/Users/cory/projects/wink/alexa-skill/Gemfile
+todo.txt
