@@ -28,7 +28,7 @@ done
 export PATH="/usr/local/heroku/bin:$PATH"
 
 # Kubernetes
-export KUBECONFIG=$HOME/.kube/staging/config:$HOME/.kube/production/config
+export KUBECONFIG=$HOME/.kube/staging/config:$HOME/.kube/production/config:$HOME/.kube/townstage/config
 
 # Go
 export GOPATH=$HOME/projects/go
@@ -67,6 +67,11 @@ alias audit_backups='ls -l ~/backups/audit | cut -c 31- | tail -n +2'
 
 function list_merged_git_branches() {
   git branch --merged master | cut -c 3- | grep -v ^master$
+}
+
+function fix_audio() {
+  sudo killall VCDAssistant coreaudiod blued
+  echo "Audio fixed."
 }
 
 # Enable vi mode
