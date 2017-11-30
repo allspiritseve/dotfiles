@@ -7,7 +7,8 @@ homebrew: /usr/local/bin/brew \
 	/usr/local/bin/psql \
 	/usr/local/bin/mysql \
 	/usr/local/bin/redis-server \
-	/usr/local/bin/ack
+	/usr/local/bin/ack \
+	/usr/local/bin/docker
 
 /usr/local/bin/brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -32,3 +33,6 @@ homebrew: /usr/local/bin/brew \
 
 /usr/local/bin/ack:
   brew install ack
+
+/usr/local/bin/docker:
+	brew install docker docker-machine

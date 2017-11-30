@@ -116,3 +116,7 @@ nnoremap <leader>t :w<cr>:!clear; beorn test %<cr>
 " let g:syntastic_auto_loc_list = 1
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
+
+" Don't expand tabs to spaces in makefiles since actual tab characters
+" are needed.
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
