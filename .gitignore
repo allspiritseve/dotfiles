@@ -9,6 +9,4 @@
 .ruby-version
 .vimrc
 ignore
-projects/wink/api/config/database.yml
-/Users/cory/projects/wink/alexa-skill/Gemfile
 todo.txt
