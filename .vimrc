@@ -1,6 +1,6 @@
 set nocompatible
 
-filetype off
+filetype on
 execute pathogen#infect()
 syntax enable
 set background=dark
@@ -14,7 +14,7 @@ set exrc
 set secure
 
 set tabstop=2 shiftwidth=2
-set noexpandtab
+set expandtab
 
 set encoding=utf-8
 set scrolloff=3
@@ -85,6 +85,8 @@ endif
 
 " au BufRead,BufNewFile *.js,*.json set sw=4 ts=4
 " au BufRead,BufNewFile *.rb set sw=2 ts=2
+
+au BufRead,BufNewFile *.make setfiletype make
 
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.

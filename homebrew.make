@@ -1,7 +1,7 @@
 install: homebrew
 
 homebrew: /usr/local/bin/brew \
-	/usr/local/bin/git \
+  /usr/local/bin/git \
 	/usr/local/bin/chruby-exec \
 	/usr/local/bin/ruby-install \
 	/usr/local/bin/psql \
@@ -32,7 +32,7 @@ homebrew: /usr/local/bin/brew \
 	brew install redis
 
 /usr/local/bin/ack:
-  brew install ack
+	brew install ack
 
 /usr/local/bin/docker:
 	brew install docker docker-machine
