@@ -1,4 +1,5 @@
-install: /usr/local/bin/brew /usr/local/bin/git /usr/local/bin/chruby-exec /usr/local/bin/ruby-install
+install: /usr/local/bin/brew /usr/local/bin/git /usr/local/bin/chruby-exec /usr/local/bin/ruby-install \
+  /usr/local/bin/psql /usr/local/bin/mysql
 
 /usr/local/bin/brew:
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -11,3 +12,9 @@ install: /usr/local/bin/brew /usr/local/bin/git /usr/local/bin/chruby-exec /usr/
 
 /usr/local/bin/ruby-install:
   brew install ruby-install
+
+/usr/local/bin/psql:
+  brew install postgresql
+
+/usr/local/bin/mysql:
+  brew install mysql
