@@ -14,7 +14,7 @@ set exrc
 set secure
 
 set tabstop=2 shiftwidth=2
-set expandtab
+set noexpandtab
 
 set encoding=utf-8
 set scrolloff=3

@@ -1,5 +1,5 @@
 install: /usr/local/bin/brew /usr/local/bin/git /usr/local/bin/chruby-exec /usr/local/bin/ruby-install \
-	/usr/local/bin/psql /usr/local/bin/mysql
+	/usr/local/bin/psql /usr/local/bin/mysql /usr/local/bin/redis-server
 
 /usr/local/bin/brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -18,3 +18,6 @@ install: /usr/local/bin/brew /usr/local/bin/git /usr/local/bin/chruby-exec /usr/
 
 /usr/local/bin/mysql:
 	brew install mysql
+
+/usr/local/bin/redis-server:
+	brew install redis
