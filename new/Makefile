@@ -4,7 +4,6 @@ install: /usr/local/bin/brew \
 	/usr/local/bin/psql \
 	/usr/local/bin/mysql \
 	/usr/local/bin/redis-server \
-	/usr/local/bin/docker \
 	node ruby
 
 ruby: /usr/local/bin/ruby-install \
@@ -38,14 +37,11 @@ node: /usr/local/bin/node \
 /usr/local/bin/ack:
 	brew install ack
 
-/usr/local/bin/docker:
-	brew install docker docker-machine docker-compose
-
 /usr/local/bin/node:
 	brew install node
 
 /usr/local/bin/dynalite: node
-	npm install dynalite
+	npm install -g dynalite
 
 /Users/cory/.rubies:
 	mkdir $@
