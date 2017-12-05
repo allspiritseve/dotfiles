@@ -59,7 +59,7 @@ function removeFromPath() {
   export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
 }
 
-setjdk 1.7
+# setjdk 1.7
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
@@ -96,8 +96,7 @@ source /usr/local/etc/bash_completion.d/beorn
 # Chruby
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-# chruby ruby-2.3.3
-
+chruby 2.3.4
 
 # Google Cloud SDK
 if [ -f '/Users/cory/Downloads/google-cloud-sdk/path.bash.inc' ]; then

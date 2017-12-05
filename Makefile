@@ -1,12 +1,12 @@
 home = /Users/cory
 
-_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .selected_editor .tmux.conf .vimrc
+_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .selected_editor .tmux.conf .vimrc .bundle/config
 dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
 
 _vimdirs = autoload bundle colors
 vimdirs = $(foreach vimdir, $(_vimdirs), $(home)/.vim/$(vimdir))
 
-_binfiles = brew git ack mysql redis-server ruby-install chruby-exec node dynalite
+_binfiles = brew git ack mysql redis-server ruby-install chruby-exec node dynalite heroku memcached
 binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
 install: $(home)/.vim \
@@ -58,3 +58,9 @@ $(dotfiles): $(home)/%: $(home)/.dotfiles/%
 
 /Users/cory/.rubies/ruby-2.3.4:
 	ruby-install ruby 2.3.4
+
+/usr/local/bin/heroku:
+	brew install heroku
+
+/usr/local/bin/memcached:
+	brew install memcached
