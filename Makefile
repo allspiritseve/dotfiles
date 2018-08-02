@@ -9,7 +9,7 @@ dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
 _vimdirs = autoload bundle colors
 vimdirs = $(foreach vimdir, $(_vimdirs), $(home)/.vim/$(vimdir))
 
-_binfiles = ack aws brew git jq mysql redis-server ruby-install chruby-exec node dynalite heroku memcached postgres
+_binfiles = ack aws brew git jq mysql redis-server ruby-install chruby-exec node heroku memcached postgres
 binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
 _homedirs = .vim .bundle
