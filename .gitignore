@@ -10,3 +10,5 @@
 .vimrc
 ignore
 todo.txt
+notes/*
+local.make

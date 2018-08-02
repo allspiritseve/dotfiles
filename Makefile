@@ -1,4 +1,7 @@
 home = /Users/cory
+machine = $(home)/machine
+
+include $(machine)/local.make
 
 _dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .selected_editor .tmux.conf .vimrc .bundle/config
 dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
@@ -6,25 +9,30 @@ dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
 _vimdirs = autoload bundle colors
 vimdirs = $(foreach vimdir, $(_vimdirs), $(home)/.vim/$(vimdir))
 
-_binfiles = brew git ack mysql redis-server ruby-install chruby-exec node dynalite heroku memcached
+_binfiles = ack aws brew git jq mysql redis-server ruby-install chruby-exec node dynalite heroku memcached postgres
 binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
-install: $(home)/.vim \
-	$(vimdirs) \
-	$(dotfiles) \
-	$(binfiles) \
-	/Users/cory/.rubies/ruby-2.3.4
+_homedirs = .vim .bundle
+homedirs = $(foreach homedir, $(_homedirs), $(home)/$(homedir))
 
-# /usr/local/bin/postgres
+_rubies = 2.3.6
+rubies = $(foreach ruby, $(_rubies), $(home)/.rubies/ruby-$(ruby))
 
-$(home)/.vim:
+misc = /usr/local/etc/bash_completion
+
+install: $(homedirs) $(vimdirs) $(dotfiles) $(binfiles) $(rubies) $(misc)
+
+$(homedirs):
 	mkdir $@
 
-$(vimdirs): $(home)/%: $(home)/.dotfiles/%
+$(vimdirs): $(home)/%: $(machine)/%
 	ln -nsf $< $@
 
-$(dotfiles): $(home)/%: $(home)/.dotfiles/%
+$(dotfiles): $(home)/%: $(machine)/%
 	ln -nsf $< $@
+
+/usr/local/bin/aws:
+	brew install awscli
 
 /usr/local/bin/brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -56,11 +64,17 @@ $(dotfiles): $(home)/%: $(home)/.dotfiles/%
 /usr/local/bin/dynalite: /usr/local/bin/node
 	npm install -g dynalite
 
-/Users/cory/.rubies/ruby-2.3.4:
-	ruby-install ruby 2.3.4
+/Users/cory/.rubies/ruby-%:
+	ruby-install ruby $*
 
 /usr/local/bin/heroku:
 	brew install heroku
 
 /usr/local/bin/memcached:
 	brew install memcached
+
+/usr/local/bin/jq:
+	brew install jq
+
+/usr/local/etc/bash_completion:
+	brew install bash-completion

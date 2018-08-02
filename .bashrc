@@ -17,7 +17,7 @@ export EC2_HOME=$HOME/.ec2
 export PATH="$EC2_HOME/bin:$PATH"
 
 # Dotfiles
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES=$HOME/machine
 export PATH="$DOTFILES/bin:$PATH"
 
 for file in $DOTFILES/bashrc/*; do
@@ -35,8 +35,8 @@ export GOPATH=$HOME/projects/go
 export PATH="$GOPATH/bin:$PATH"
 
 # Node
-export PATH="./node_modules/.bin:$PATH"
-export PATH="/usr/local/opt/node@6/bin:$PATH"
+# export PATH="./node_modules/.bin:$PATH"
+# export PATH="/usr/local/opt/node@8/bin:$PATH"
 
 # Android
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -66,7 +66,7 @@ alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
 alias audit_backups='ls -l ~/backups/audit | cut -c 31- | tail -n +2'
 
 function list_merged_git_branches() {
-  git branch --merged master | cut -c 3- | grep -v ^master$
+  git branch --merged master | cut -c 3- | grep -v -E '(master|production)'
 }
 
 function fix_audio() {
@@ -89,14 +89,13 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   source $(brew --prefix)/etc/bash_completion
 fi
 
-source /usr/local/etc/bash_completion.d/beorn
+if [ -f /usr/local/etc/bash_completion.d/beorn ]; then
+  source /usr/local/etc/bash_completion.d/beorn
+fi
 
 # source /usr/local/git/contrib/completion/git-completion.bash
-
-# Chruby
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
-chruby 2.3.4
+source /usr/local/etc/bash_completion.d/git-completion.bash
+source /usr/local/Cellar/git/2.17.0/etc/bash_completion.d/git-completion.bash
 
 # Google Cloud SDK
 if [ -f '/Users/cory/Downloads/google-cloud-sdk/path.bash.inc' ]; then
@@ -105,4 +104,9 @@ fi
 
 if [ -f '/Users/cory/Downloads/google-cloud-sdk/completion.bash.inc' ]; then
   source '/Users/cory/Downloads/google-cloud-sdk/completion.bash.inc'
+fi
+
+# Local configuration
+if [ -f ~/.bashrc-local ]; then
+  source ~/.bashrc-local
 fi
