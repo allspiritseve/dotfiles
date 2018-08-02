@@ -1,7 +1,7 @@
 home = /Users/cory
 machine = $(home)/machine
 
-include $(machine)/local.make
+-include $(machine)/local.make
 
 _dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .selected_editor .tmux.conf .vimrc .bundle/config
 dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
@@ -65,7 +65,7 @@ $(dotfiles): $(home)/%: $(machine)/%
 	npm install -g dynalite
 
 /Users/cory/.rubies/ruby-%:
-	ruby-install ruby $*
+	ruby-install ruby $* --latest
 
 /usr/local/bin/heroku:
 	brew install heroku
