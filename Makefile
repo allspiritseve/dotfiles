@@ -3,7 +3,9 @@ machine = $(home)/machine
 
 -include $(machine)/local.make
 
-_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .selected_editor .tmux.conf .vimrc .bundle/config
+include $(machine)/ruby.make
+
+_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .ruby-version .selected_editor .tmux.conf .vimrc .bundle/config
 dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
 
 _vimdirs = autoload bundle colors
@@ -14,9 +16,6 @@ binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
 _homedirs = .vim .bundle
 homedirs = $(foreach homedir, $(_homedirs), $(home)/$(homedir))
-
-_rubies = 2.3.6
-rubies = $(foreach ruby, $(_rubies), $(home)/.rubies/ruby-$(ruby))
 
 misc = /usr/local/etc/bash_completion
 
@@ -63,9 +62,6 @@ $(dotfiles): $(home)/%: $(machine)/%
 
 /usr/local/bin/dynalite: /usr/local/bin/node
 	npm install -g dynalite
-
-/Users/cory/.rubies/ruby-%:
-	ruby-install ruby $* --latest
 
 /usr/local/bin/heroku:
 	brew install heroku

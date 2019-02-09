@@ -44,22 +44,10 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
 export RUBYMOTION_ANDROID_NDK=$HOME/Library/Android/ndk
 export RUBYMOTION_ANDROID_SDK=$HOME/Library/Android/sdk
 
-function setjdk() {
-  if [ $# -ne 0 ]; then
-    removeFromPath '/System/Library/Frameworks/JavaVM.framework/Home/bin'
-    if [ -n "${JAVA_HOME+x}" ]; then
-      removeFromPath $JAVA_HOME
-    fi
-    export JAVA_HOME=`/usr/libexec/java_home -v $@`
-    export PATH=$JAVA_HOME/bin:$PATH
-  fi
-}
-
-function removeFromPath() {
-  export PATH=$(echo $PATH | sed -E -e "s;:$1;;" -e "s;$1:?;;")
-}
-
-# setjdk 1.7
+# Chruby
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby $(cat $HOME/.ruby-version)
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
@@ -95,7 +83,7 @@ fi
 
 # source /usr/local/git/contrib/completion/git-completion.bash
 source /usr/local/etc/bash_completion.d/git-completion.bash
-source /usr/local/Cellar/git/2.17.0/etc/bash_completion.d/git-completion.bash
+source /usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
 
 # Google Cloud SDK
 if [ -f '/Users/cory/Downloads/google-cloud-sdk/path.bash.inc' ]; then

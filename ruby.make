@@ -1,7 +1,10 @@
-install: /Users/cory/.rubies /Users/cory/.rubies/ruby-2.3.4
+_rubies = 2.3.6 $(cat .ruby-version)
+rubies = $(foreach ruby, $(_rubies), $(home)/.rubies/ruby-$(ruby))
+
+install: $(rubies)
 
 /Users/cory/.rubies:
-  mkdir $@
+	mkdir $@
 
-/Users/cory/.rubies/ruby-2.3.4:
-  ruby-install ruby 2.3.4
+/Users/cory/.rubies/ruby-%: /Users/cory/.rubies
+	ruby-install ruby $* --latest
