@@ -3,12 +3,12 @@
 export ACKRC=.ackrc
 export CLICOLOR=true
 export EDITOR=vim # :)
-export HISTCONTROL=ignoredups:erasedups
+export HISTCONTROL=ignoredups:erasedups:ignorespace
 export HISTFILESIZE=99999999
 export HISTSIZE=99999999
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export PATH="/usr/local/bin:/usr/local/sbin:$HOME/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$HOME/bin:./bin:$PATH"
 export PS1="\u in \w \$ "
 export TZ="America/Detroit"
 
@@ -19,6 +19,12 @@ export PATH="$EC2_HOME/bin:$PATH"
 # Dotfiles
 export DOTFILES=$HOME/machine
 export PATH="$DOTFILES/bin:$PATH"
+
+# OpenSSL
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
 for file in $DOTFILES/bashrc/*; do
   [ -r $file ] && source $file
@@ -35,7 +41,7 @@ export GOPATH=$HOME/projects/go
 export PATH="$GOPATH/bin:$PATH"
 
 # Node
-# export PATH="./node_modules/.bin:$PATH"
+export PATH="./node_modules/.bin:$PATH"
 # export PATH="/usr/local/opt/node@8/bin:$PATH"
 
 # Android
@@ -62,6 +68,12 @@ function fix_audio() {
   echo "Audio fixed."
 }
 
+function docker_prune() {
+  docker container prune \
+    && docker rm $(docker ps -q -f 'status=exited') \
+    && docker rmi $(docker images -q -f "dangling=true")
+}
+
 # Enable vi mode
 set -o vi
 
@@ -73,17 +85,26 @@ for script in /etc/profile.d/*.sh; do
   [ -r $script ] && source $script
 done
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  source $(brew --prefix)/etc/bash_completion
-fi
+# Bash shell completion
+# if type brew &>/dev/null; then
+#   for COMPLETION in $(brew --prefix)/etc/bash_completion.d/*; do
+#     [[ -f $COMPLETION ]] && source "$COMPLETION"
+#   done
+#   if [[ -f $(brew --prefix)/etc/profile.d/bash_completion.sh ]]; then
+#     source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+#   fi
+# fi
 
-if [ -f /usr/local/etc/bash_completion.d/beorn ]; then
-  source /usr/local/etc/bash_completion.d/beorn
+# Bash completion
+if [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
+  source "/usr/local/etc/profile.d/bash_completion.sh"
 fi
 
 # source /usr/local/git/contrib/completion/git-completion.bash
 source /usr/local/etc/bash_completion.d/git-completion.bash
 source /usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 # Google Cloud SDK
 if [ -f '/Users/cory/Downloads/google-cloud-sdk/path.bash.inc' ]; then

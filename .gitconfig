@@ -9,8 +9,10 @@
 [core]
   excludesfile = /Users/cory/.gitignore
   autocrlf = input
+  editor=vim
 [merge]
-  tool = opendiff
+	tool = vimdiff
+  conflictstyle = diff3
 	ff = only
 [github]
   user = allspiritseve
@@ -19,3 +21,5 @@
 	enabled = 0
 [push]
 	default = upstream
+[diff]
+	tool = vimdiff

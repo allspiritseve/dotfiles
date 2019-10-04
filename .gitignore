@@ -9,6 +9,7 @@
 .ruby-version
 .vimrc
 ignore
+notes.txt
 todo.txt
 notes/*
 local.make

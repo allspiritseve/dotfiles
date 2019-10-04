@@ -1,11 +1,10 @@
 set nocompatible
 
-filetype on
+filetype plugin indent on
 execute pathogen#infect()
 syntax enable
 set background=dark
-colorscheme solarized
-filetype plugin indent on
+colorscheme solarized8
 set modeline
 set modelines=5
 
@@ -21,9 +20,9 @@ set scrolloff=3
 
 " Backup
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim/tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory^=$HOME/.vim/tmp//
 set undodir=~/.vim-tmp,~/.tmp,~/tmp,/tmp
 set writebackup
 
@@ -87,6 +86,9 @@ endif
 " au BufRead,BufNewFile *.rb set sw=2 ts=2
 
 au BufRead,BufNewFile *.make setfiletype make
+au BufRead,BufNewFile Thorfile setfiletype ruby
+
+let g:ruby_indent_assignment_style = 'variable'
 
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.
@@ -108,7 +110,10 @@ endfunction
 nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 
 " Run tests
-nnoremap <leader>t :w<cr>:!clear; beorn test %<cr>
+nnoremap <leader>t :w<cr>:let cmd='!beorn $(spec_for_class %)'<bar>call histadd("cmd", cmd)<bar>execute cmd<cr>
+
+" Run Rubocop
+nnoremap <leader>r :w<cr>:!rubocop %<cr>
 
 " Syntastic options
 " set statusline+=%#warningmsg#

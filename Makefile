@@ -1,3 +1,5 @@
+SHELL = /bin/bash
+
 home = /Users/cory
 machine = $(home)/machine
 
@@ -14,12 +16,19 @@ vimdirs = $(foreach vimdir, $(_vimdirs), $(home)/.vim/$(vimdir))
 _binfiles = ack aws brew git jq mysql redis-server ruby-install chruby-exec node heroku memcached postgres
 binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
+_sbinfiles = logrotate
+sbinfiles = $(foreach sbinfile, $(_sbinfiles), /usr/local/sbin/$(sbinfile))
+
 _homedirs = .vim .bundle
 homedirs = $(foreach homedir, $(_homedirs), $(home)/$(homedir))
 
+_rubies = $(cat .ruby-version) 2.3.6 2.4.4 2.6.1
+
+rubies = $(foreach ruby, $(_rubies), $(home)/.rubies/ruby-$(ruby))
+
 misc = /usr/local/etc/bash_completion
 
-install: $(homedirs) $(vimdirs) $(dotfiles) $(binfiles) $(rubies) $(misc)
+install: $(homedirs) $(vimdirs) $(binfiles) $(sbinfiles) $(dotfiles) $(rubies) $(misc)
 
 $(homedirs):
 	mkdir $@
@@ -56,6 +65,9 @@ $(dotfiles): $(home)/%: $(machine)/%
 
 /usr/local/bin/ack:
 	brew install ack
+
+/usr/local/bin/logrotate:
+	brew install logrotate
 
 /usr/local/bin/node:
 	brew install node
