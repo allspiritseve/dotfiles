@@ -68,6 +68,7 @@ inoremap jk <ESC>
 autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
 autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
 autocmd Filetype markdown setlocal spell
+:autocmd BufRead,BufNewFile /Users/cory/projects/paxos/* setlocal ts=4 sw=4
 highlight EOLWS ctermbg=red guibg=red
 
 let mapleader=" "
