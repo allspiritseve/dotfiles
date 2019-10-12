@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+class_name = ARGV[0]
+
+if class_name =~ %r[^spec/]
+  puts class_name
+  exit
+end
+
+case class_name
+when %r[^spec/]
+  spec_name = class_name
+when %r[^app/]
+  spec_name = class_name.sub(%r[app/(.*)/(.*).rb], 'spec/\1/\2_spec.rb')
+when %r[^lib/]
+  spec_name = class_name.sub(%r[lib/(.*)/(.*).rb], 'spec/lib/\1/\2_spec.rb')
+end
+
+if spec_name
+  puts spec_name
+else
+  exit 1
+end

@@ -53,7 +53,9 @@ export RUBYMOTION_ANDROID_SDK=$HOME/Library/Android/sdk
 # Chruby
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
-chruby $(cat $HOME/.ruby-version)
+if [ -f $HOME/.ruby-version ]; then
+  chruby $(cat $HOME/.ruby-version)
+fi
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 alias postgres.server='pg_ctl -l "$PGDATA/postgresql.log"'
