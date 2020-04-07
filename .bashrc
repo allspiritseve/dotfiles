@@ -2,7 +2,7 @@
 
 export ACKRC=.ackrc
 export CLICOLOR=true
-export EDITOR=vim # :)
+export EDITOR=vim # =)
 export HISTCONTROL=ignoredups:erasedups:ignorespace
 export HISTFILESIZE=99999999
 export HISTSIZE=99999999

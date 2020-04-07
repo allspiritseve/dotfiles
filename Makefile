@@ -1,42 +1,36 @@
 SHELL = /bin/bash
 
-home = /Users/cory
-machine = $(home)/machine
+machine = $(HOME)/machine
 
 -include $(machine)/local.make
-
 include $(machine)/ruby.make
 
 _dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .ruby-version .selected_editor .tmux.conf .vimrc .bundle/config
-dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
+dotfiles = $(foreach dotfile, $(_dotfiles), $(HOME)/$(dotfile))
 
-_vimdirs = autoload bundle colors
-vimdirs = $(foreach vimdir, $(_vimdirs), $(home)/.vim/$(vimdir))
+_vimdirs = autoload bundle pack colors
+vimdirs = $(foreach vimdir, $(_vimdirs), $(HOME)/.vim/$(vimdir))
 
-_binfiles = ack aws brew git jq mysql redis-server ruby-install chruby-exec node heroku memcached postgres
+_binfiles = ack aws brew git jq redis-server ruby-install chruby-exec node memcached
 binfiles = $(foreach binfile, $(_binfiles), /usr/local/bin/$(binfile))
 
-_sbinfiles = logrotate
-sbinfiles = $(foreach sbinfile, $(_sbinfiles), /usr/local/sbin/$(sbinfile))
+# _sbinfiles = logrotate
+# sbinfiles = $(foreach sbinfile, $(_sbinfiles), /usr/local/sbin/$(sbinfile))
 
 _homedirs = .vim .bundle
-homedirs = $(foreach homedir, $(_homedirs), $(home)/$(homedir))
-
-_rubies = $(cat .ruby-version) 2.3.6 2.4.4 2.6.1
-
-rubies = $(foreach ruby, $(_rubies), $(home)/.rubies/ruby-$(ruby))
+homedirs = $(foreach homedir, $(_homedirs), $(HOME)/$(homedir))
 
 misc = /usr/local/etc/bash_completion
 
-install: $(homedirs) $(vimdirs) $(binfiles) $(sbinfiles) $(dotfiles) $(rubies) $(misc)
+install: $(homedirs) $(vimdirs) $(binfiles) $(sbinfiles) $(dotfiles) $(misc)
 
 $(homedirs):
 	mkdir $@
 
-$(vimdirs): $(home)/%: $(machine)/%
+$(vimdirs): $(HOME)/%: $(machine)/%
 	ln -nsf $< $@
 
-$(dotfiles): $(home)/%: $(machine)/%
+$(dotfiles): $(HOME)/%: $(machine)/%
 	ln -nsf $< $@
 
 /usr/local/bin/aws:
@@ -53,9 +47,6 @@ $(dotfiles): $(home)/%: $(machine)/%
 
 /usr/local/bin/ruby-install:
 	brew install ruby-install
-
-/usr/local/bin/postgres:
-	brew install postgresql
 
 /usr/local/bin/mysql:
 	brew install mysql
