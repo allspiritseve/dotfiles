@@ -1,6 +1,7 @@
 [user]
 	name = Cory Kaufman-Schofield
 	email = cory@corykaufman.com
+  signingkey = 90118D8D3324E0FEAEC739E2D4D755274C777F64
 [color]
   diff = auto
   status = auto
