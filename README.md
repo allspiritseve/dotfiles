@@ -1,11 +1,14 @@
 # Dotfiles
 
+## New Machine
+
+1. Install [iTerm](https://iterm2.com)
+
 ## Instructions
 
 1. Clone repo
 
-    cd ~
-    git clone git@github.com:allspiritseve/dotfiles.git machine
+    git clone git@github.com:allspiritseve/dotfiles.git ~/machine
 
 1. Install Homebrew
 
