@@ -111,7 +111,7 @@ endfunction
 nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 
 " Run tests
-nnoremap <leader>t :w<cr>:let cmd='!beorn $(spec_for_class %)'<bar>call histadd("cmd", cmd)<bar>execute cmd<cr>
+nnoremap <leader>t :w<cr>:let cmd='!beorn $(test_for_class %)'<bar>call histadd("cmd", cmd)<bar>execute cmd<cr>
 
 " Run Rubocop
 nnoremap <leader>r :w<cr>:!rubocop %<cr>

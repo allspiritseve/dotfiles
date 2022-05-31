@@ -5,8 +5,8 @@ machine = $(HOME)/machine
 -include $(machine)/local.make
 include $(machine)/ruby.make
 
-_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .ruby-version .selected_editor .tmux.conf .vimrc .bundle/config
-dotfiles = $(foreach dotfile, $(_dotfiles), $(HOME)/$(dotfile))
+_dotfiles = .ackrc .bashrc .bash_profile .editrc .gemrc .gitconfig .gitignore .inputrc .irbrc .ruby-version .selected_editor .tmux.conf .vimrc .bundle/config .zshrc
+dotfiles = $(foreach dotfile, $(_dotfiles), $(home)/$(dotfile))
 
 _vimdirs = autoload bundle pack colors
 vimdirs = $(foreach vimdir, $(_vimdirs), $(HOME)/.vim/$(vimdir))

@@ -1,5 +1,5 @@
-*.sw?
-*.un?
+# *.sw?
+# *.un?
 .DS_Store
 .ackrc
 .beornrc
@@ -10,6 +10,7 @@
 .vimrc
 ignore
 notes.txt
+notes.md
 todo.txt
 notes/*
 local.make
