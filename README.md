@@ -8,7 +8,7 @@
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-1. Install [1Password](https://1password.com)
+1. Install [1Password](https://downloads.1password.com/mac/1Password.zip)
 
 ## Instructions
 
