@@ -19,6 +19,11 @@
     # Add to ssh-agent
     eval "$(ssh-agent -s)"
 
+1. Rename host
+
+    1. Go to Apple > System Preferences > Sharing
+    1. Type a new name in the Computer Name field
+
 ## Instructions
 
 1. Clone repo
