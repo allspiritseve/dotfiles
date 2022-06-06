@@ -24,3 +24,5 @@
 	default = upstream
 [diff]
 	tool = vimdiff
+[pull]
+	ff = only
