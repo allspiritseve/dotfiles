@@ -12,6 +12,13 @@
 
 1. Install [Slack](https://slack.com/downloads/mac)
 
+1. Generate SSH key
+
+    ssh-keygen -t ed25519 -C "cory@townstage.com"
+
+    # Add to ssh-agent
+    eval "$(ssh-agent -s)"
+
 ## Instructions
 
 1. Clone repo
