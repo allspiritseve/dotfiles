@@ -10,6 +10,8 @@
 
 1. Install [1Password](https://downloads.1password.com/mac/1Password.zip)
 
+1. Install [Slack](https://slack.com/downloads/mac)
+
 ## Instructions
 
 1. Clone repo
