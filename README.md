@@ -2,6 +2,8 @@
 
 ## New Machine
 
+1. Install [Firefox](https://www.mozilla.org/en-US/firefox/download)
+
 1. Install [iTerm](https://iterm2.com)
 
 1. Install [Homebrew](https://brew.sh/)
