@@ -32,8 +32,10 @@ then
 fi
 
 # Chruby
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
+if [ -d $(brew --prefix)/share/chruby ]; then
+  source $(brew --prefix)/share/chruby/chruby.sh
+  source $(brew --prefix)/share/chruby/auto.sh
+fi
 
 # Local configuration
 if [ -f ~/.zshrc-local ]; then
