@@ -9,6 +9,9 @@ export HISTFILE=~/.zsh_history
 # zsh
 setopt histignorespace
 
+# less
+export LESS="R N"
+
 # vi mode
 bindkey -v
 bindkey "^?" backward-delete-char
