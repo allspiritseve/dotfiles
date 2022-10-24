@@ -128,6 +128,7 @@ nnoremap <leader>r :w<cr>:!rubocop %<cr>
 " Don't expand tabs to spaces in makefiles since actual tab characters
 " are needed.
 autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+autocmd FileType zsh set shiftwidth=4 tabstop=4 softtabstop=0
 
 " Solarized
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"

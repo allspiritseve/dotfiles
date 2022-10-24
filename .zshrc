@@ -3,14 +3,23 @@
 # Environment
 export PS1="%n in %/ \$ "
 export PATH=$HOME/bin:./bin:$PATH
-export HISTFILE=~/.zsh_history
 # export LESS=-R
+export KUBECONFIG="$HOME/.kube/config"
+
+# History
+export HISTSIZE=1000000000
+export HISTFILESIZE=1000000000
+setopt INC_APPEND_HISTORY
+alias history="fc -l 1"
 
 # zsh
 setopt histignorespace
 
 # less
-export LESS="R N"
+# export LESS="R N"
+
+# Report time for all commands that take more than 10 seconds
+export REPORTTIME=10
 
 # vi mode
 bindkey -v
@@ -48,4 +57,8 @@ fi
 fix_audio() {
   sudo killall VCDAssistant coreaudiod blued
   echo "Audio fixed."
+}
+
+check_wireguard() {
+    ssh cory@charlie.acremesh.us1c.b.gce.acreops.net 'sudo wg show all | tail -n 5 | grep handshake | cut -c 3-'
 }
