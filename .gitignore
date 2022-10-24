@@ -1,5 +1,5 @@
-# *.sw?
-# *.un?
+*.swp
+*.swo
 .DS_Store
 .ackrc
 .beornrc
@@ -16,3 +16,4 @@ notes/*
 local.make
 .diaconfig
 local.zsh
+# *.un?
