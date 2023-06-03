@@ -2,6 +2,7 @@
 --type-add=xml=.xsd
 --type-add=css=.scss,.less,.sass
 --type-add=js=.coffee
+--type-add=terraform=.tf
 --ignore-dir=log
 --ignore-dir=tmp
 --ignore-dir=public/packs

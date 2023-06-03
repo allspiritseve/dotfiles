@@ -11,7 +11,7 @@ dotfiles = $(foreach dotfile, $(_dotfiles), $(HOME)/$(dotfile))
 _vimdirs = autoload bundle pack colors
 vimdirs = $(foreach vimdir, $(_vimdirs), $(HOME)/.vim/$(vimdir))
 
-_binfiles = ack aws brew git jq redis-server ruby-install chruby-exec node memcached
+_binfiles = ack aws brew git jq redis-server ruby-install chruby-exec node memcached watch
 binfiles = $(foreach binfile, $(_binfiles), $(shell brew --prefix)/bin/$(binfile))
 
 _homedirs = .vim .bundle
@@ -64,3 +64,6 @@ $(shell brew --prefix)/bin/jq:
 
 $(shell brew --prefix)/etc/bash_completion:
 	brew install bash-completion
+
+$(shell brew --prefix)/bin/watch:
+	brew install watch

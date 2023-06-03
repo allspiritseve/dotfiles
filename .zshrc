@@ -9,7 +9,10 @@ export KUBECONFIG="$HOME/.kube/config"
 # History
 export HISTSIZE=1000000000
 export HISTFILESIZE=1000000000
+export SAVEHIST=$HISTSIZE
 setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_FIND_NO_DUPS
 alias history="fc -l 1"
 
 # zsh
@@ -37,7 +40,7 @@ bindkey -M viins '\e/' vi-search-fix
 # Homebrew git completions
 if type brew &>/dev/null
 then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  FPATH="$(brew --prefix)/share/zsh/site-functions:~/bin/completions:${FPATH}"
 
   autoload -Uz compinit
   compinit
@@ -53,6 +56,9 @@ fi
 if [ -f ~/.zshrc-local ]; then
   source ~/.zshrc-local
 fi
+
+# Python
+export PATH=$HOME/Library/Python/3.9/bin:./bin:$PATH
 
 fix_audio() {
   sudo killall VCDAssistant coreaudiod blued
