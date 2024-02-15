@@ -2,9 +2,10 @@
 
 # Environment
 export PS1="%n in %/ \$ "
-export PATH=$HOME/bin:./bin:$PATH
+export PATH=$HOME/bin:$HOME/git/acretrader/acreops-acrectl/bin:$HOME/bin:$PATH
 # export LESS=-R
 export KUBECONFIG="$HOME/.kube/config"
+export GPG_TTY=$(tty)
 
 # History
 export HISTSIZE=1000000000
@@ -48,8 +49,8 @@ fi
 
 # Chruby
 if [ -d $(brew --prefix)/share/chruby ]; then
-  source $(brew --prefix)/share/chruby/chruby.sh
-  source $(brew --prefix)/share/chruby/auto.sh
+#   source $(brew --prefix)/share/chruby/chruby.sh
+#   source $(brew --prefix)/share/chruby/auto.sh
 fi
 
 # Local configuration
@@ -58,7 +59,7 @@ if [ -f ~/.zshrc-local ]; then
 fi
 
 # Python
-export PATH=$HOME/Library/Python/3.9/bin:./bin:$PATH
+export PATH=$HOME/Library/Python/3.9/bin:$PATH
 
 fix_audio() {
   sudo killall VCDAssistant coreaudiod blued
@@ -68,3 +69,23 @@ fix_audio() {
 check_wireguard() {
     ssh cory@charlie.acremesh.us1c.b.gce.acreops.net 'sudo wg show all | tail -n 5 | grep handshake | cut -c 3-'
 }
+
+wiki() {
+    cd ~/git/acretrader/acreops.wiki
+}
+
+format-git-merge-commit() {
+    sed "s/'\(.*\)'/\`\1\`./g"
+}
+
+
+compdef _acre acrer
+
+_acre() {
+    typeset -a subcmds
+    subcmds=('deploy:description for deploy command' 'test:description for test command')
+    _describe 'command' subcmds
+}
+
+# Direnv
+eval "$(direnv hook zsh)"

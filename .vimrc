@@ -3,7 +3,9 @@ set nocompatible
 filetype plugin indent on
 execute pathogen#infect()
 syntax enable
+set re=0
 set background=dark
+" set background=light
 colorscheme solarized8
 set modeline
 set modelines=5
@@ -114,7 +116,7 @@ nnoremap <leader>f :call SelectaCommand("find * -type f", "", ":e")<cr>
 nnoremap <leader>t :w<cr>:let cmd='!beorn $(test_for_class %)'<bar>call histadd("cmd", cmd)<bar>execute cmd<cr>
 
 " Run Rubocop
-nnoremap <leader>r :w<cr>:!rubocop %<cr>
+" nnoremap <leader>r :w<cr>:!rubocop %<cr>
 
 " Syntastic options
 " set statusline+=%#warningmsg#

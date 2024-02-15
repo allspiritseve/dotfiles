@@ -28,6 +28,10 @@ if ! brew ls --versions bash-completion > /dev/null; then
     brew install bash-completion
 fi
 
+if which gh > /dev/null; then
+    if [[ $(gh config get editor) != "vim" ]]; then gh config set editor vim; fi
+fi
+
 # Local configuration
 if [ -f local.zsh ]; then
   source local.zsh

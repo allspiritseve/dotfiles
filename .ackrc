@@ -7,3 +7,6 @@
 --ignore-dir=tmp
 --ignore-dir=public/packs
 --ignore-dir=public/assets
+--ignore-dir=dist
+--ignore-file=match:.eslintcache
+--ignore-dir=prerendered

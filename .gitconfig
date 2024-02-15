@@ -1,7 +1,7 @@
 [user]
 	name = Cory Kaufman-Schofield
 	email = cory@corykaufman.com
-  signingkey = 90118D8D3324E0FEAEC739E2D4D755274C777F64
+	signingkey = 1145FE273B55BB37BD12B680E0339236B39BC6AE
 [color]
   diff = auto
   status = auto
@@ -11,10 +11,11 @@
   excludesfile = /Users/cory/.gitignore
   autocrlf = input
   editor=vim
+	hooksPath = /Users/cory/.git/hooks
 [merge]
 	tool = vimdiff
   conflictstyle = diff3
-	ff = only
+	ff = no
 [github]
   user = allspiritseve
   token = 1f8be1532b32c93ebb9e3bf2c643bd5a
@@ -26,3 +27,9 @@
 	tool = vimdiff
 [pull]
 	ff = only
+[init]
+	defaultBranch = main
+[url "https://@github.com/acretrader"]
+	insteadOf = git@github.com:acretrader
+[gpg]
+	program = gpg
