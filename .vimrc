@@ -90,6 +90,7 @@ au BufRead,BufNewFile *.make setfiletype make
 au BufRead,BufNewFile Thorfile setfiletype ruby
 
 let g:ruby_indent_assignment_style = 'variable'
+let g:terraform_fmt_on_save=1
 
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.

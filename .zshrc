@@ -2,9 +2,11 @@
 
 # Environment
 export PS1="%n in %/ \$ "
+# export PATH=$HOME/bin:./bin:$PATH
 export PATH=$HOME/bin:./bin:$PATH
 # export LESS=-R
 export KUBECONFIG="$HOME/.kube/config"
+export EDITOR=vim
 
 # History
 export HISTSIZE=1000000000
@@ -14,6 +16,7 @@ setopt INC_APPEND_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
 alias history="fc -l 1"
+alias typora="open -a typora"
 
 # zsh
 setopt histignorespace
@@ -52,6 +55,11 @@ if [ -d $(brew --prefix)/share/chruby ]; then
   source $(brew --prefix)/share/chruby/auto.sh
 fi
 
+chruby 3.2.1
+
+# asdf
+source /usr/local/opt/asdf/libexec/asdf.sh
+
 # Local configuration
 if [ -f ~/.zshrc-local ]; then
   source ~/.zshrc-local
@@ -63,6 +71,12 @@ export PATH=$HOME/Library/Python/3.9/bin:./bin:$PATH
 fix_audio() {
   sudo killall VCDAssistant coreaudiod blued
   echo "Audio fixed."
+}
+
+docker_prune() {
+  docker container prune -f \
+    && (docker ps -q -f 'status=exited' | xargs docker rm) \
+    && (docker images -q -f "dangling=true" | xargs docker rmi)
 }
 
 check_wireguard() {
